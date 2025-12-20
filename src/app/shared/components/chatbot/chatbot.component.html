@@ -1,23 +1,34 @@
-<div class="chatbot" [class.open]="isOpen">
-  <div class="chatbot-header">
-    <h3>Asistente</h3>
-    <button (click)="toggleChat()" class="close-btn">×</button>
+<button class="bot-launcher" (click)="toggleChat()">
+  <span *ngIf="!isOpen">💬</span>
+  <span *ngIf="isOpen">✖</span>
+</button>
+
+<div class="chat-window" [class.show]="isOpen">
+  <div class="chat-header">
+    <h3>Asistente Toro Moro</h3>
+    <small>En línea</small>
   </div>
-  
-  <div class="chatbot-messages" *ngIf="isOpen">
-    <div *ngFor="let message of messages" [class.user]="message.sender === 'user'" [class.bot]="message.sender === 'bot'" class="message">
-      {{ message.text }}
+
+  <div class="chat-body">
+    <div *ngFor="let msg of messages" [ngClass]="['message', msg.sender]">
+      <div class="bubble">
+        {{ msg.text }}
+      </div>
+      <div class="suggestions" *ngIf="msg.suggestions">
+        <button *ngFor="let suggest of msg.suggestions" class="suggest-btn">
+          {{ suggest }}
+        </button>
+      </div>
     </div>
+    <div *ngIf="isLoading" class="loader">Escribiendo...</div>
   </div>
-  
-  <div class="chatbot-input" *ngIf="isOpen">
+
+  <div class="chat-footer">
     <input 
-      [value]="inputMessage"
-      (input)="inputMessage = $any($event.target).value"
-      (keyup.enter)="sendMessage()"
-      placeholder="Escribe tu pregunta...">
+      [(ngModel)]="inputMessage" 
+      (keyup.enter)="sendMessage()" 
+      placeholder="Escribe tu duda sobre tallas o pieles..."
+    />
     <button (click)="sendMessage()">Enviar</button>
   </div>
-  
-  <button *ngIf="!isOpen" (click)="toggleChat()" class="chatbot-toggle">💬 Chat</button>
 </div>
