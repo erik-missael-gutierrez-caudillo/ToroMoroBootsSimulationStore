@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/">🥾 BootShop</a>
+    </div>
+    
+    <nav class="nav">
+      <a routerLink="/products">Catálogo</a>
+      <a routerLink="/cart">Carrito ({{ (cart$ | async)?.totalItems || 0 }})</a>
+      
+      <div class="auth-links" *ngIf="(currentUser$ | async) as user; else noUser">
+        <span>Hola, {{ user.firstName }}</span>
+        <a *ngIf="user.role === 'admin'" routerLink="/admin">Admin</a>
+        <button (click)="logout()">Cerrar sesión</button>
+      </div>
+      
+      <ng-template #noUser>
+        <a routerLink="/auth/login">Iniciar sesión</a>
+        <a routerLink="/auth/register">Registrarse</a>
+      </ng-template>
+    </nav>
+    
+    <div class="search">
+      <input type="text" placeholder="Buscar botas...">
+    </div>
+  </div>
+</header>

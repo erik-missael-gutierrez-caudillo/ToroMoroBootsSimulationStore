@@ -1,0 +1,57 @@
+.home {
+  min-height: 100vh;
+}
+
+.banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.banner h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem 0;
+}
+
+.banner p {
+  font-size: 1.2rem;
+  margin: 0 0 2rem 0;
+}
+
+.banner .btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #ffc107;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.banner .btn:hover {
+  background-color: #ffb300;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.feature {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.feature h3 {
+  margin-top: 0;
+  color: #333;
+}

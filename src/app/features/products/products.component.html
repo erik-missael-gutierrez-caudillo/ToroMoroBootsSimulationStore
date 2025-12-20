@@ -1,0 +1,22 @@
+<div class="products">
+  <h1>Catálogo de Botas</h1>
+  
+  <div class="filters">
+    <input type="text" placeholder="Buscar por nombre...">
+    <select>
+      <option value="">Todas las categorías</option>
+      <option value="casual">Casual</option>
+      <option value="formal">Formal</option>
+      <option value="deportiva">Deportiva</option>
+    </select>
+    <input type="range" min="0" max="5000" placeholder="Precio máximo">
+  </div>
+  
+  <div class="products-grid">
+    <app-product-card 
+      *ngFor="let product of products$ | async" 
+      [product]="product"
+      (addToCart)="addToCart($event)">
+    </app-product-card>
+  </div>
+</div>

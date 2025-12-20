@@ -1,0 +1,58 @@
+<div class="cart">
+  <h1>Mi Carrito</h1>
+  
+  <div *ngIf="(cart$ | async) as cart">
+    <div *ngIf="cart.items.length === 0" class="empty-cart">
+      <p>Tu carrito está vacío</p>
+      <a routerLink="/products" class="btn">Continuar comprando</a>
+    </div>
+    
+    <div *ngIf="cart.items.length > 0">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cart.items">
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price | currencyMxn }}</td>
+            <td>
+              <input 
+                type="number" 
+                [value]="item.quantity" 
+                (change)="updateQuantity(item.product.id, +$any($event.target).value)"
+                min="1">
+            </td>
+            <td>{{ (item.product.price * item.quantity) | currencyMxn }}</td>
+            <td>
+              <button (click)="removeItem(item.product.id)" class="btn-remove">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="cart-summary">
+        <div class="coupon">
+          <input type="text" #couponInput placeholder="Código de cupón">
+          <button (click)="applyCoupon(couponInput.value)">Aplicar</button>
+        </div>
+        
+        <div class="totals">
+          <p>Subtotal: {{ cart.totalPrice | currencyMxn }}</p>
+          <p *ngIf="cart.discountPercentage">Descuento: -{{ (cart.totalPrice * cart.discountPercentage / 100) | currencyMxn }}</p>
+          <h3>Total: {{ cart.totalPrice | currencyMxn }}</h3>
+        </div>
+        
+        <button (click)="checkout()" class="btn-checkout" [routerLink]="['/checkout']">
+          Proceder al pago
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

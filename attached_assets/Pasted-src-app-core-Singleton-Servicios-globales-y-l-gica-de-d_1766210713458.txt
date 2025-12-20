@@ -1,0 +1,32 @@
+src/app/
+├── core/                       # Singleton: Servicios globales y lógica de datos
+│   ├── guards/                 # Protección de rutas (auth.guard.ts, admin.guard.ts)
+│   ├── interceptors/           # Gestión de errores HTTP y Tokens de sesión
+│   ├── models/                 # Interfaces (product.model.ts, cart.model.ts, user.model.ts)
+│   ├── services/               # Lógica de negocio (cart.service.ts, product.service.ts, auth.service.ts)
+│   └── core.module.ts          # Configuración de servicios básicos
+│
+├── shared/                     # Componentes reutilizables en cualquier sección
+│   ├── components/
+│   │   ├── header/             # Barra superior con logo y búsqueda
+│   │   ├── footer/             # Información de contacto y redes sociales
+│   │   ├── chatbot/            # (NUEVO) Asistente virtual flotante
+│   │   ├── not-found/          # (NUEVO) Error 404 personalizado
+│   │   └── product-card/       # Tarjeta individual de bota (la que creaste en JS)
+│   ├── pipes/                  # Transformación de datos (currency-mxn.pipe.ts)
+│   └── shared.module.ts        # Exporta componentes comunes
+│
+├── features/                   # Módulos de funcionalidades grandes (Lazy Loaded)
+│   ├── home/                   # Landing page (Banners y secciones principales)
+│   ├── products/               # Catálogo completo
+│   │   ├── pages/
+│   │   │   ├── product-list/   # Vista de cuadrícula con filtros
+│   │   │   └── product-detail/ # Vista de una sola bota con selección de talla
+│   ├── cart/                   # Página de carrito (resumen y cupones)
+│   ├── checkout/               # (FALTANTE) Proceso de pago y envío
+│   ├── auth/                   # (NUEVO) Login, Registro y Recuperación de contraseña
+│   └── admin/                  # (NUEVO) Dashboard para gestión de stock y ventas
+│
+├── app.component.html          # Contenedor principal (<router-outlet> y <app-header>)
+├── app.routes.ts               # Definición de rutas (incluyendo el 404)
+└── app.config.ts               # Configuración global de Angular

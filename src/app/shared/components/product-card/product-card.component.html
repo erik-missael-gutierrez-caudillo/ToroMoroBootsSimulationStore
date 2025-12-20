@@ -1,0 +1,19 @@
+<div class="product-card">
+  <div class="image">
+    <img [src]="product.image" [alt]="product.name">
+  </div>
+  <div class="content">
+    <h3>{{ product.name }}</h3>
+    <p class="description">{{ product.description }}</p>
+    <p class="price">{{ product.price | currencyMxn }}</p>
+    <p class="stock" [class.low-stock]="product.stock < 5">
+      Stock: {{ product.stock > 0 ? product.stock : 'Agotado' }}
+    </p>
+  </div>
+  <div class="actions">
+    <a [routerLink]="['/products', product.id]" class="btn btn-view">Ver detalles</a>
+    <button (click)="onAddToCart()" class="btn btn-add" [disabled]="product.stock === 0">
+      Agregar al carrito
+    </button>
+  </div>
+</div>

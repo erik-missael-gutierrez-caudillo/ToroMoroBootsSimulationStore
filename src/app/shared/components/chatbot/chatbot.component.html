@@ -1,0 +1,23 @@
+<div class="chatbot" [class.open]="isOpen">
+  <div class="chatbot-header">
+    <h3>Asistente</h3>
+    <button (click)="toggleChat()" class="close-btn">×</button>
+  </div>
+  
+  <div class="chatbot-messages" *ngIf="isOpen">
+    <div *ngFor="let message of messages" [class.user]="message.sender === 'user'" [class.bot]="message.sender === 'bot'" class="message">
+      {{ message.text }}
+    </div>
+  </div>
+  
+  <div class="chatbot-input" *ngIf="isOpen">
+    <input 
+      [value]="inputMessage"
+      (input)="inputMessage = $any($event.target).value"
+      (keyup.enter)="sendMessage()"
+      placeholder="Escribe tu pregunta...">
+    <button (click)="sendMessage()">Enviar</button>
+  </div>
+  
+  <button *ngIf="!isOpen" (click)="toggleChat()" class="chatbot-toggle">💬 Chat</button>
+</div>
