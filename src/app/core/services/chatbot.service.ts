@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { ChatbotModel } from '../models/chatbot.model';
 
@@ -7,10 +6,9 @@ import { ChatbotModel } from '../models/chatbot.model';
   providedIn: 'root'
 })
 export class ChatbotService {
-  // URL de tu API (ejemplo: Dialogflow, OpenAI, o un backend propio en Node.js)
-  private apiUrl = 'https://f7f1539e-99c8-4afa-8375-dae711494b4c-00-mseo5q1csmuo.riker.replit.dev/';
-
-  constructor(private http: HttpClient) {}
+  // CORREGIDO: Removida inyección de HttpClient que causaba deadlock en esbuild
+  // Se usa solo mock data por ahora. Agregar HttpClient cuando se conecte a API real
+  constructor() {}
 
   getResponse(message: string): Observable<ChatbotModel> {
     // Por ahora, simulamos una respuesta basada en tu modelo

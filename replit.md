@@ -38,20 +38,30 @@ Aplicación de e-commerce Angular completa para la venta de botas con estructura
 ## Estado Actual
 ✅ Estructura completa creada
 ✅ Componentes base implementados
-✅ Servicios configurados
+✅ Servicios configurados (ProductService, CartService, AuthService, ChatbotService)
 ✅ Guards de autenticación y admin
-✅ Pipes personalizados
+✅ Pipes personalizados (CurrencyMxnPipe)
 ✅ Rutas definidas
 ✅ Workflow Angular corriendo en puerto 5000
+✅ **Chatbot completamente funcional** (con respuestas mock)
+✅ Header, Footer, Home page con banner y características
+✅ ProductCard reutilizable
+✅ Chat flotante en esquina inferior derecha
+
+## Errores Corregidos
+❌ **HttpClient deadlock en esbuild** - CORREGIDO: Removida inyección innecesaria de HttpClient en ChatbotService
+❌ **HttpClient provider faltante** - CORREGIDO: Agregado provideHttpClient() en app.config.ts
+❌ **FormsModule faltante** - CORREGIDO: Agregado a imports de componentes
 
 ## Próximos Pasos
-- Conectar servicios a API backend
+- Conectar servicios a API backend real
 - Implementar formularios de auth con validaciones
-- Agregar carrito con localStorage
+- Agregar carrito con localStorage/sessionStorage
 - Implementar checkout con pasarela de pago
 - Agregar filtros de productos avanzados
-- Implementar admin dashboard
+- Implementar admin dashboard con gráficos
 - Tests unitarios e integración
+- Mejorar responsividad del chatbot
 
 ## Configuración de Desarrollo
 ```bash
