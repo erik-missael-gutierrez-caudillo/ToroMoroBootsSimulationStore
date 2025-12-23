@@ -1,34 +1,45 @@
-<button class="bot-launcher" (click)="toggleChat()">
-  <span *ngIf="!isOpen">💬</span>
-  <span *ngIf="isOpen">✖</span>
+<button class="open-chat" (click)="toggleChat('close-chat')"postcssrcpostcssrc>
+	{{ isOpen === 'hidden' ? '💬 Chat' : '× Cerrar' }}
 </button>
 
-<div class="chat-window" [class.show]="isOpen">
-  <div class="chat-header">
-    <h3>Asistente Toro Moro</h3>
-    <small>En línea</small>
-  </div>
-
-  <div class="chat-body">
-    <div *ngFor="let msg of messages" [ngClass]="['message', msg.sender]">
-      <div class="bubble">
-        {{ msg.text }}
-      </div>
-      <div class="suggestions" *ngIf="msg.suggestions">
-        <button *ngFor="let suggest of msg.suggestions" class="suggest-btn">
-          {{ suggest }}
-        </button>
-      </div>
-    </div>
-    <div *ngIf="isLoading" class="loader">Escribiendo...</div>
-  </div>
-
-  <div class="chat-footer">
-    <input 
-      [(ngModel)]="inputMessage" 
-      (keyup.enter)="sendMessage()" 
-      placeholder="Escribe tu duda sobre tallas o pieles..."
-    />
-    <button (click)="sendMessage()">Enviar</button>
-  </div>
+<div class="chat-container" [class.hidden]="isOpen === 'hidden'">
+	<div class="chat-header">
+		<h3>Asistente Virtual</h3>
+		<button class="close-chat" (click)="toggleChat('open-chat')">×</button>
+	</div>
+	<div class="chat-messages" #scrollContainer>
+			<div *ngFor="let message of messages" class="message" [class.user]="message.sender === 'user'" [class.bot]="message.sender === 'bot'">
+					<p>{{ message.text }}</p>
+						<div *ngIf="message.ticket" class="ticket">
+								<h4>🎟️ Tu Cupón Exclusivo</h4>
+								<p><strong>Código:</strong> {{ message.ticket.codigo }}</p>
+								<p><strong>Descuento:</strong> {{ message.ticket.descuento }}</p>
+								<p><strong>Válido para:</strong> {{ message.ticket.cliente }}</p>
+								<p><em>{{ message.ticket.expira }}</em></p>
+								<button class="btn">Copiar Código</button>
+						</div>
+						<div *ngIf="message.mapUrl" class="map-container">
+								<iframe [src]="message.mapUrl" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+								<p class="map-link">  <a [href]="message.mapUrl" target="_blank">Ver en Google Maps</a></p>
+								<p class="map-location">📍 Calle Elena 304, San Juan de Dios, León, Gto.</p>
+						</div>
+						<div  *ngIf="message.suggestions?.length" class="suggestions">
+								<button *ngFor="let suggestion of message.suggestions" (click)="sendMessage(suggestion)">
+										{{ suggestion }}
+								</button>
+								<button *ngIf="message.sender === 'bot'" (click)="sendMessage('inicio')">🏠 Menú Principal</button>
+						</div>
+						<div *ngIf="isLoading && message.sender === 'bot'" class="typing-indicator">
+								<span></span>
+								<span></span>
+								<span></span>
+						</div>
+			</div>
+	  	</div>
+	<div class="chat-footer">
+		<div class="chat-input">
+				<input [(ngModel)]="inputMessage" (keyup.enter)="sendMessage()" placeholder="Escribe tu mensaje...">
+				<button (click)="sendMessage()">Enviar</button>
+		</div>
+	</div>
 </div>

@@ -1,49 +1,63 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Necesario para ngModel
+import { FormsModule } from '@angular/forms';
 import { ChatbotService } from '../../../core/services/chatbot.service';
-import { ChatbotModel } from '../../../core/models/chatbot.model';
+import { Message } from '../../../core/models/chatbot.model';
 
 @Component({
-  selector: 'app-chatbot',
-  standalone: true,
-  imports: [CommonModule, FormsModule], // Quitamos ChatbotService de aquí
-  templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.css']
+	selector: 'app-chatbot',
+	standalone: true,
+	imports: [CommonModule, FormsModule],
+	templateUrl: './chatbot.component.html',
+	styleUrls: ['./chatbot.component.css']
 })
-export class ChatbotComponent {
-  private chatService = inject(ChatbotService); // Forma moderna de inyectar en Angular 18
+export class ChatbotComponent implements AfterViewChecked {
+	private chatService = inject(ChatbotService);
+	@ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
-  isOpen = false;
-  messages: { text: string; sender: 'user' | 'bot'; suggestions?: string[] }[] = [];
-  inputMessage = '';
-  isLoading = false;
+	isOpen = 'hidden';
+	messages: Message[] = [];
+	inputMessage = '';
+	isLoading = false;
 
-  toggleChat(): void {
-    this.isOpen = !this.isOpen;
-  }
+	constructor() {
+		// Mensaje de bienvenida inicial
+		this.sendMessage('hola');
+	}
 
-  sendMessage(): void {
-    if (!this.inputMessage.trim() || this.isLoading) return;
+	ngAfterViewChecked() { this.scrollToBottom(); }
 
-    const userMessage = this.inputMessage;
-    this.messages.push({ text: userMessage, sender: 'user' });
-    this.inputMessage = '';
-    this.isLoading = true;
+	toggleChat(parent?: string) { 
+		this.isOpen = this.isOpen === 'hidden' ? 'show' : 'hidden';
+		if(parent) {
+			const parentElement = document.querySelector(parent);
+			if(parentElement) parentElement.classList.toggle('hidden');
+		}
+	}
 
-    this.chatService.getResponse(userMessage).subscribe({
-      next: (res: ChatbotModel) => {
-        this.messages.push({ 
-          text: res.response, 
-          sender: 'bot',
-          suggestions: res.suggestions 
-        });
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.messages.push({ text: 'Lo siento, hubo un error de conexión.', sender: 'bot' });
-        this.isLoading = false;
-      }
-    });
-  }
+	sendMessage(textOverride?: string) {
+		const msg = textOverride || this.inputMessage;
+		if (!msg.trim() || this.isLoading) return;
+
+		if (!textOverride) this.messages.push({ text: msg, sender: 'user' });
+		this.inputMessage = '';
+		this.isLoading = true;
+
+		setTimeout(() => {
+			this.chatService.obtenerRespuesta(msg).subscribe(res => {
+				this.messages.push({
+					text: res.texto,
+					sender: 'bot',
+					suggestions: res.suggestions,
+					mapUrl: res.mapUrl,
+					ticket: res.ticket
+				});
+				this.isLoading = false;
+			});
+		}, 700);
+	}
+
+	private scrollToBottom() {
+		this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+	}
 }
